@@ -1,0 +1,13 @@
+services:
+  fhem-chat-agent:
+    build: .
+    ports:
+      - "${PORT:-8088}:8088"
+    env_file:
+      - .env
+    volumes:
+      - fhem-chat-data:/data
+    restart: unless-stopped
+
+volumes:
+  fhem-chat-data:

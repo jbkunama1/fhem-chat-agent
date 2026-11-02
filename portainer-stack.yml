@@ -1,0 +1,35 @@
+services:
+  fhem-chat-agent:
+    image: ${IMAGE:-ghcr.io/jbkunama1/fhem-chat-agent:latest}
+    ports:
+      - "${PORT:-8088}:8088"
+    environment:
+      APP_USERNAME: ${APP_USERNAME}
+      APP_PASSWORD: ${APP_PASSWORD}
+      DB_PATH: /data/app.db
+      MODEL: ${MODEL:-all_coding}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://9router.arbeitermili.eu/v1}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      MCP_SERVER_URL: ${MCP_SERVER_URL:-https://haimcp.arbeitermili.eu/mcp/cms1vfcpi00042bs248msptyv}
+      MCP_API_KEY: ${MCP_API_KEY}
+      MCP_AUTH_HEADER: ${MCP_AUTH_HEADER:-Authorization}
+      MCP_AUTH_SCHEME: ${MCP_AUTH_SCHEME:-Bearer}
+      FHEM_URL: ${FHEM_URL}
+      FHEM_USERNAME: ${FHEM_USERNAME}
+      FHEM_PASSWORD: ${FHEM_PASSWORD}
+      FHEM_VERIFY_TLS: ${FHEM_VERIFY_TLS:-true}
+      APPROVAL_TTL_SECONDS: ${APPROVAL_TTL_SECONDS:-120}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_ALLOWED_USER_IDS: ${TELEGRAM_ALLOWED_USER_IDS}
+    volumes:
+      - fhem-chat-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8088/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  fhem-chat-data:
