@@ -10,7 +10,7 @@ services:
       OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://9router.arbeitermili.eu/v1}
       OPENAI_API_KEY: ${OPENAI_API_KEY:?OPENAI_API_KEY setzen}
       OPENAI_MODEL: ${OPENAI_MODEL:-all_coding}
-      MCP_SERVER_URL: ${MCP_SERVER_URL:-https://haimcp.arbeitermili.eu/mcp/cms1vfcpi00042bs248msptyv}
+      MCP_SERVER_URL: ${MCP_SERVER_URL:-}
       MCP_API_KEY: ${MCP_API_KEY:-}
       MCP_AUTH_HEADER: ${MCP_AUTH_HEADER:-Authorization}
       MCP_AUTH_SCHEME: ${MCP_AUTH_SCHEME-Bearer}
