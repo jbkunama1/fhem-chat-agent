@@ -1,6 +1,6 @@
 services:
   fhem-chat:
-    image: ${APP_IMAGE:-ghcr.io/jbkunama1/fhem-chat-agent:latest}
+    image: ${APP_IMAGE:-ghcr.io/jbkunama1/hai.fhemchatagent:latest}
     restart: unless-stopped
     ports:
       - "${APP_PORT:-8088}:8080"

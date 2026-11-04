@@ -40,5 +40,5 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/jbkunama1/fhem-chat-agent:latest
-            ghcr.io/jbkunama1/fhem-chat-agent:${{ github.sha }}
+            ghcr.io/jbkunama1/hai.fhemchatagent:latest
+            ghcr.io/jbkunama1/hai.fhemchatagent:${{ github.sha }}

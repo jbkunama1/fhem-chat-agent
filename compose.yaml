@@ -1,7 +1,7 @@
 services:
   fhem-chat:
     build: .
-    image: fhem-chat-agent:local
+    image: hai-fhemchatagent:local
     restart: unless-stopped
     env_file: .env
     ports:
