@@ -1,0 +1,32 @@
+services:
+  fhem-chat:
+    image: ${APP_IMAGE:-ghcr.io/jbkunama1/hai.fhemchatagent:latest}
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8088}:8080"
+    environment:
+      APP_USERNAME: ${APP_USERNAME:-daniel}
+      APP_PASSWORD: ${APP_PASSWORD:?APP_PASSWORD setzen}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://9router.arbeitermili.eu/v1}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?OPENAI_API_KEY setzen}
+      OPENAI_MODEL: ${OPENAI_MODEL:-all_coding}
+      MCP_SERVER_URL: ${MCP_SERVER_URL:-}
+      MCP_API_KEY: ${MCP_API_KEY:-}
+      MCP_AUTH_HEADER: ${MCP_AUTH_HEADER:-Authorization}
+      MCP_AUTH_SCHEME: ${MCP_AUTH_SCHEME-Bearer}
+      MCP_TRANSPORT: ${MCP_TRANSPORT:-streamable-http}
+      FHEM_URL: ${FHEM_URL:-}
+      FHEM_USERNAME: ${FHEM_USERNAME:-}
+      FHEM_PASSWORD: ${FHEM_PASSWORD:-}
+      FHEM_VERIFY_TLS: ${FHEM_VERIFY_TLS:-true}
+      APPROVAL_TTL_SECONDS: ${APPROVAL_TTL_SECONDS:-120}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_ALLOWED_USER_IDS: ${TELEGRAM_ALLOWED_USER_IDS:-}
+    volumes:
+      - chat-data:/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  chat-data:
