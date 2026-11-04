@@ -1,60 +1,121 @@
-# FHEM Chat Agent
+<div align="center">
 
-Eigene Implementierung: deutscher mobiler Web-Chat und optionaler Telegram-Textbot, OpenAI-kompatibles Tool Calling, FHEM-MCP und direkter FHEMWEB-Zugang. Ein Container mit SQLite-Volume. Audio ist noch nicht enthalten.
+# 🏠🤖 hAI.FHEMChatAgent
 
-## Portainer (Docker Standalone)
+**Dein Zuhause. Dein Assistent.** – Deutscher Mobil-Chat und Telegram-Bot für FHEM mit KI-Tool-Calling, MCP-Anbindung und Einzelfreigabe für jede Schreibaktion.
 
-1. GitHub Actions: erfolgreichen Lauf von Test and publish abwarten. Erst dann existiert das GHCR-Image (amd64/arm64).
-2. Bei privatem Paket ghcr.io als Registry in Portainer eintragen: GitHub-Benutzer und PAT mit read:packages. Keine Schlüssel ins Repository schreiben.
-3. Stacks > Add stack > Web editor: portainer-stack.yml einfügen.
-4. Stack-Variablen anhand .env.example setzen. APP_PASSWORD, OPENAI_API_KEY und für deinen Server MCP_API_KEY setzen. Optional direkten Zugang mit FHEM_URL inklusive /fhem sowie FHEM_USERNAME/FHEM_PASSWORD konfigurieren.
-5. Optional TELEGRAM_BOT_TOKEN und TELEGRAM_ALLOWED_USER_IDS (numerische IDs, kommagetrennt) setzen. Nur private Chats; leere Liste sperrt alle. Kein paralleler Telegram-Webhook.
-6. Deploy. Web-Chat unter http://SERVER:8088 mit APP_USERNAME (daniel) und APP_PASSWORD öffnen. Öffentlich nur hinter HTTPS-Reverse-Proxy/VPN; Basic Auth nicht über ungeschütztes Internet verwenden.
+[![Projektseite](https://img.shields.io/badge/Projektseite-GitHub%20Pages-78e8cc?style=for-the-badge&logo=github&logoColor=white)](https://jbkunama1.github.io/hAI.FHEMChatAgent/)
+[![Docker](https://img.shields.io/badge/Docker-amd64%20%7C%20arm64-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/jbkunama1/hAI.FHEMChatAgent/actions)
+[![Portainer](https://img.shields.io/badge/Portainer-Stack-13BEF9?style=for-the-badge&logo=portainer&logoColor=white)](portainer-stack.yml)
 
-APP_IMAGE überschreibt das Image; APP_PORT den Hostport. Reproduzierbare Updates: Commit-SHA-Tag statt latest. In Portainer Image neu ziehen und Stack aktualisieren. Volume nicht löschen. Private GitHub-Git-Anmeldung ersetzt keine GHCR-Registry-Anmeldung. localhost in FHEM_URL bezeichnet den Container, nicht deinen FHEM-Server.
+![Python](https://img.shields.io/badge/Python-FastAPI-3776AB?logo=python&logoColor=white)
+![FHEM](https://img.shields.io/badge/FHEM-Smart%20Home-E4572E)
+![MCP](https://img.shields.io/badge/MCP-streamable--http%20%7C%20sse-8299ff)
+![Telegram](https://img.shields.io/badge/Telegram-Bot-26A5E4?logo=telegram&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Volume-003B57?logo=sqlite&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Prototyp-ffbc78)
+[![Last Commit](https://img.shields.io/github/last-commit/jbkunama1/hAI.FHEMChatAgent?logo=github)](https://github.com/jbkunama1/hAI.FHEMChatAgent/commits/main)
 
-## Alternative: lokal bauen
+</div>
+
+---
+
+## ✨ Features
+
+| | Feature | Beschreibung |
+|---|---|---|
+| 💬 | **Web-Chat** | Mobile-first, dunkles Design „Home Studio“ mit Vorlagenkarten |
+| 🤖 | **Telegram-Bot** | Inline-Menü, nur private Chats, Whitelist per User-ID |
+| 🧠 | **KI-Tool-Calling** | OpenAI-kompatible API (`OPENAI_BASE_URL`, `OPENAI_MODEL`) |
+| 🔌 | **FHEM-MCP** | Nur Tools mit Präfix `fhem_`; `streamable-http` oder `sse` |
+| 🌐 | **FHEMWEB direkt** | Optional per HTTP Basic Auth (`FHEM_URL` inkl. `/fhem`) |
+| 🔐 | **Einzelfreigabe** | `set`, `attr`, `define`, `delete`, freie Kommandos: ein Klick = ein Aufruf |
+| 🗄️ | **SQLite-Volume** | Verlauf pro Telegram-Nutzer, Freigaben laufen ab |
+| 🐳 | **Ein Container** | Portainer-Stack, GHCR-Image für amd64 und arm64 |
+
+## 🧭 Architektur
+
+```text
+ 📱 Web-Chat ──┐
+               ├──▶ FastAPI (ui_app:app) ──▶ 🧠 LLM (Tool Calling)
+ ✈️ Telegram ──┘            │
+                            ├──▶ 🔌 FHEM-MCP  (fhem_*)
+                            ├──▶ 🌐 FHEMWEB   (optional)
+                            └──▶ 🗄️ SQLite    (/data)
+```
+
+## 🚀 Schnellstart mit Portainer
+
+1. ✅ In [Actions](https://github.com/jbkunama1/hAI.FHEMChatAgent/actions) den Lauf *Test and publish* abwarten.
+2. 🔑 Bei privatem Paket `ghcr.io` als Registry in Portainer eintragen (PAT mit `read:packages`).
+3. 📦 *Stacks → Add stack → Web editor*: Inhalt von [`portainer-stack.yml`](portainer-stack.yml) einfügen.
+4. ⚙️ Variablen nach [`.env.example`](.env.example) setzen – Pflicht: `APP_PASSWORD`, `OPENAI_API_KEY`, ggf. `MCP_API_KEY`.
+5. ▶️ Deploy und `http://SERVER:8088` öffnen.
+
+> ⚠️ Öffentlich nur hinter HTTPS-Reverse-Proxy oder VPN. Keine Schlüssel ins Repository.
 
 ```sh
-git clone https://github.com/jbkunama1/fhem-chat-agent.git
-cd fhem-chat-agent
+git clone https://github.com/jbkunama1/hAI.FHEMChatAgent.git
+cd hAI.FHEMChatAgent
 cp .env.example .env
-joe .env
-chmod 600 .env
+joe .env && chmod 600 .env
 docker compose up -d --build
 ```
 
-Private Repositories benötigen Git-Anmeldung. Lokal auf dem Docker-Host gebautes Image kann mit APP_IMAGE=fhem-chat-agent:local im Portainer-Stack verwendet werden. compose.yaml braucht Checkout und .env; für Web Editor portainer-stack.yml verwenden. Swarm nicht unterstützt. Git-Stack-Builds hängen von Portainer-Version und Checkout-Unterstützung ab; empfohlen ist der Image-Stack.
+## 🔧 Konfiguration
 
-## Einstellungen
+| Variable | Standard | Zweck |
+|---|---|---|
+| `APP_USERNAME` / `APP_PASSWORD` | `daniel` / Pflicht | Login Web-Chat |
+| `OPENAI_BASE_URL` / `OPENAI_MODEL` | Router-URL / `all_coding` | LLM mit Function Calling |
+| `MCP_SERVER_URL` / `MCP_API_KEY` | – | FHEM-MCP-Server |
+| `MCP_AUTH_HEADER` / `MCP_AUTH_SCHEME` | `Authorization` / `Bearer` | Für `X-API-Key` Scheme leer setzen |
+| `MCP_TRANSPORT` | `streamable-http` | oder `sse` |
+| `FHEM_URL` | leer | leer = direkte Befehle aus |
+| `FHEM_VERIFY_TLS` | `true` | nur bewusst `false` |
+| `APPROVAL_TTL_SECONDS` | `120` | Gültigkeit einer Freigabe |
+| `TELEGRAM_BOT_TOKEN` / `TELEGRAM_ALLOWED_USER_IDS` | leer | leere Liste sperrt alle |
+| `APP_IMAGE` / `APP_PORT` | GHCR latest / `8088` | Image und Hostport |
 
-Vollständige Variablen: .env.example und portainer-stack.yml.
+## 🔐 Sicherheitsmodell
 
-- OPENAI_BASE_URL: https://9router.arbeitermili.eu/v1; /v1 bei abweichendem Router-Pfad anpassen. OPENAI_MODEL=all_coding muss Function Tool Calling unterstützen.
-- MCP_AUTH_HEADER=Authorization und MCP_AUTH_SCHEME=Bearer sind konfigurierbare Defaults, nicht live verifiziert. Für X-API-Key Header ändern und Scheme explizit leer setzen.
-- MCP_TRANSPORT=streamable-http oder sse. Kein automatisches Raten von Headern/Transport.
-- FHEM_URL leer deaktiviert direkte Befehle. Vollständiger HTTP(S)-Pfad inklusive /fhem, ohne Query oder Zugangsdaten. FHEM_VERIFY_TLS=true belassen, false nur für bewusst akzeptierte interne Zertifikate.
-- APPROVAL_TTL_SECONDS=120. DATA_DIR intern /data. Schlüssel bleiben im Backend.
+- 🟢 Bekannte Lese-Tools laufen direkt.
+- 🟠 Alles andere braucht eine einmalige Button-Freigabe, gebunden an Benutzer, Ziel und Argumente.
+- ⏱️ Freigaben verfallen und werden bei Neustart storniert.
+- 🚫 Keine automatische Wiederholung, kein stiller Transportwechsel.
+- ⚠️ Kein FHEM-CSRF-Handling. FHEMWEB nicht öffentlich exponieren.
 
-## Freigaben
-
-Nur MCP-Namen mit fhem_ werden angeboten. Bekannte Lese-Tools dürfen direkt laufen. Alle anderen Aufrufe, insbesondere set, attr, define, delete, freie Kommandos, Mehrfach-Set und alle direkten Webbefehle, benötigen eine einmalige Button-Freigabe. Backend bindet unveränderte Argumente und Ziel an deinen Benutzer/Privatchat. Freigaben laufen ab, werden vor Ausführung atomar verbraucht und bei Neustart storniert. Ein Klick genehmigt genau einen Toolaufruf; Mehrfach-Tools und freie Kommandos können mehrere enthaltene Aktionen auslösen, daher vollständig prüfen.
-
-Keine automatische Wiederholung bei Timeout und kein stiller Transportwechsel. Ausgang kann unklar bleiben: zuerst Gerätestatus prüfen. HTTP 200 oder leere Antwort ist allein kein Erfolgsnachweis. MCP-Fehler und FHEM-Textantworten erscheinen im Chat.
-
-Auf Nutzerwunsch kein FHEM-CSRF-Handling: kein Tokenabruf, kein fwcsrf. Direkte Befehle senden POST-Formulardaten cmd und XHR=1 mit HTTP Basic Auth. Ziel-FHEM muss solche Requests akzeptieren. Anwendung verändert keine FHEM-Sicherheitseinstellungen und behandelt Ablehnungen nicht als Erfolg. FHEMWEB ohne diesen Schutz nicht öffentlich exponieren. Die Chatoberfläche hat davon unabhängig geschützte JSON-Endpunkte.
-
-## Betrieb und Grenzen
-
-Ein Web-Benutzer, je Telegram-Nutzer eigener Verlauf; nur ein Worker/Container pro Datenvolume und Bot. Web: Neuer Chat leert Verlauf und verwirft offene Freigaben. Ab etwa 400 Nachrichten keine neuen Chat-Aufträge; Telegram-Verlauf derzeit durch gesichertes Umbenennen der Datenbank bei gestopptem Dienst zurücksetzen (betrifft alle). Neustart markiert unaufgelöste Toolaufrufe als unterbrochen; keine automatische Ausführung.
-
-Backup: Dienst stoppen, Volume chat-data sichern. Verläufe enthalten Geräte-/Personendaten; kein automatisches Löschkonzept. /health prüft nur den Prozess. Diagnose: MCP 401 -> Header/Key; KI 404 -> /v1; keine Tools -> Transport/fhem_-Namen; FHEM-Ablehnung -> Auth, Netzwerk, Rechte und CSRF-Konfiguration der Zielinstanz.
-
-## Tests / Validierungsstand
+## 🧪 Tests
 
 ```sh
 python -m unittest discover -s tests -v
 python -m compileall -q app.py guard.py
 ```
 
-Sieben lokale Policy-/Persistenztests: Lese-Whitelist, unveränderte Argumente, Einmaligkeit, fremde Benutzer, Ablauf, Ablehnung und Neustart-Wiederherstellung. CI installiert zusätzlich Abhängigkeiten und prüft App-Import vor Imagebau. Live-MCP, FHEM, 9router und Telegram sind ohne Schlüssel nicht end-to-end getestet; lokaler Docker-Build nicht verifiziert. Erst erfolgreichen CI-/Image-Build prüfen und mit ungefährlichen Geräteabfragen beginnen.
+Live-MCP, FHEM, LLM-Router und Telegram sind ohne Schlüssel nicht End-to-End getestet.
+
+## 🗺️ Roadmap
+
+- [x] Web-Chat, Telegram-Menü, Einzelfreigabe
+- [ ] Audio / Sprachnachrichten
+- [ ] Dynamische Geräteliste
+- [ ] Verlaufsdiagramme
+- [ ] Mehrere Web-Benutzer
+- [ ] Löschkonzept für Verläufe
+
+## 🩺 Troubleshooting
+
+| Symptom | Ursache |
+|---|---|
+| MCP 401 | Header, Scheme oder Key |
+| KI 404 | `/v1` im Pfad prüfen |
+| Keine Tools | Transport oder `fhem_`-Namen |
+| FHEM lehnt ab | Auth, Netz, Rechte, CSRF der Zielinstanz |
+
+---
+
+<div align="center">
+
+*Gebaut mit ❤️ von Daniel · hAI.FHEMChatAgent © 2026*
+
+</div>

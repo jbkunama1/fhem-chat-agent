@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>hAI.FHEMChatAgent · FHEM Chat Agent</title>
+<meta name="description" content="Deutscher Web-Chat und Telegram-Bot für FHEM mit KI, MCP und Einzelfreigabe.">
+<style>
+:root{--bg:#0b1020;--line:#2a3552;--ink:#f0f5ff;--muted:#aebbd4;--mint:#78e8cc;--indigo:#93a8ff;--apricot:#ffbc78}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);font:16px/1.6 system-ui,sans-serif;background:radial-gradient(ellipse at 10% 0,#293365 0,transparent 48%),radial-gradient(ellipse at 100% 60%,#173c48 0,transparent 45%),var(--bg);min-height:100vh}
+.wrap{max-width:1050px;margin:auto;padding:28px 18px}a{color:var(--mint)}
+.hero{position:relative;overflow:hidden;border:1px solid #455b84;border-radius:24px;background:linear-gradient(120deg,#283d76,#215d69);padding:34px;margin-bottom:24px}
+.hero h1{margin:0 0 10px;font-size:clamp(28px,5vw,44px);max-width:70%}.hero p{max-width:65%;color:#deebff}
+.hero svg{position:absolute;right:20px;top:20px;width:190px;height:160px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.badges img{height:22px}
+.btn{display:inline-block;margin:6px 8px 0 0;padding:12px 18px;border-radius:12px;font-weight:700;text-decoration:none;color:#102334;background:linear-gradient(110deg,#83f0cc,#8db5ff)}
+.btn.alt{background:#25314b;color:var(--ink);border:1px solid #465579}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:18px 0 28px}
+.card{background:#151d33e8;border:1px solid var(--line);border-radius:18px;padding:18px;border-top:3px solid var(--mint)}
+.card:nth-child(3n+1){border-top-color:var(--apricot)}.card:nth-child(3n+2){border-top-color:var(--indigo)}
+.card .i{font-size:28px}.card h3{margin:6px 0}.card p{margin:0;color:var(--muted);font-size:14px}
+h2{margin:30px 0 8px}pre{background:#0e172a;border:1px solid #455473;border-radius:14px;padding:16px;overflow:auto;font-size:13px}
+table{width:100%;border-collapse:collapse;background:#151d33;border-radius:14px;overflow:hidden}td,th{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}th{background:#1d2845}
+.warn{background:#3d3042;border:1px solid var(--apricot);border-radius:16px;padding:16px;margin-top:18px}
+footer{margin-top:34px;color:var(--muted);font-size:13px;text-align:center}
+@media(max-width:700px){.hero h1,.hero p{max-width:100%}.hero svg{display:none}}
+</style></head><body><div class="wrap">
+<section class="hero"><h1>🏠🤖 hAI.FHEMChatAgent</h1>
+<p>Dein Zuhause. Dein Assistent. Web-Chat und Telegram-Bot für FHEM – mit KI-Tool-Calling, MCP und Einzelfreigabe für jede Schreibaktion.</p>
+<svg viewBox="0 0 200 180" aria-hidden="true"><circle cx="105" cy="90" r="75" fill="#b2f1de" opacity=".13"/><path d="M40 85 L105 30 L170 85 M55 77 V145 H155 V77" fill="none" stroke="#dcfff4" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><rect x="90" y="106" width="30" height="39" rx="4" fill="#ffca80"/><circle cx="153" cy="39" r="13" fill="#a6bbff"/><circle cx="38" cy="124" r="10" fill="#76e8d0"/></svg>
+<div class="badges">
+<img alt="Docker" src="https://img.shields.io/badge/Docker-amd64%20%7C%20arm64-2496ED?logo=docker&logoColor=white">
+<img alt="FastAPI" src="https://img.shields.io/badge/Python-FastAPI-3776AB?logo=python&logoColor=white">
+<img alt="Telegram" src="https://img.shields.io/badge/Telegram-Bot-26A5E4?logo=telegram&logoColor=white">
+<img alt="MCP" src="https://img.shields.io/badge/MCP-FHEM-8299ff">
+<img alt="Status" src="https://img.shields.io/badge/Status-Prototyp-ffbc78">
+<img alt="Last commit" src="https://img.shields.io/github/last-commit/jbkunama1/hAI.FHEMChatAgent">
+</div>
+<a class="btn" href="https://github.com/jbkunama1/hAI.FHEMChatAgent">GitHub-Repo ↗</a>
+<a class="btn alt" href="https://github.com/jbkunama1/hAI.FHEMChatAgent/blob/main/portainer-stack.yml">Portainer-Stack</a>
+<a class="btn alt" href="https://github.com/jbkunama1/hAI.FHEMChatAgent/actions">Build-Verlauf</a></section>
+
+<h2>✨ Features</h2><div class="grid">
+<div class="card"><div class="i">💬</div><h3>Web-Chat</h3><p>Mobile-first, dunkles Home-Studio-Design mit Vorlagenkarten.</p></div>
+<div class="card"><div class="i">✈️</div><h3>Telegram</h3><p>Inline-Menü, private Chats, Whitelist per User-ID.</p></div>
+<div class="card"><div class="i">🧠</div><h3>KI-Tool-Calling</h3><p>OpenAI-kompatible API, Modell frei wählbar.</p></div>
+<div class="card"><div class="i">🔌</div><h3>FHEM-MCP</h3><p>Nur <code>fhem_*</code>-Tools, streamable-http oder SSE.</p></div>
+<div class="card"><div class="i">🔐</div><h3>Einzelfreigabe</h3><p>Ein Klick = genau ein Schreibaufruf, mit Ablauf.</p></div>
+<div class="card"><div class="i">🐳</div><h3>Ein Container</h3><p>Portainer-Stack, SQLite-Volume, GHCR-Image.</p></div></div>
+
+<h2>🧭 Architektur</h2>
+<pre>Web-Chat ──┐
+           ├─▶ FastAPI ─▶ LLM (Tool Calling)
+Telegram ──┘      ├─▶ FHEM-MCP (fhem_*)
+                  ├─▶ FHEMWEB (optional)
+                  └─▶ SQLite (/data)</pre>
+
+<h2>🚀 Installation in 5 Schritten</h2>
+<table><tr><th>#</th><th>Schritt</th></tr>
+<tr><td>1</td><td>Erfolgreichen CI-Lauf <em>Test and publish</em> abwarten</td></tr>
+<tr><td>2</td><td>Bei privatem Paket ghcr.io in Portainer als Registry eintragen</td></tr>
+<tr><td>3</td><td>Stack aus <code>portainer-stack.yml</code> anlegen</td></tr>
+<tr><td>4</td><td><code>APP_PASSWORD</code>, <code>OPENAI_API_KEY</code>, <code>MCP_API_KEY</code> setzen</td></tr>
+<tr><td>5</td><td>Deploy, dann <code>http://SERVER:8088</code> öffnen</td></tr></table>
+<pre>git clone https://github.com/jbkunama1/hAI.FHEMChatAgent.git
+cd hAI.FHEMChatAgent
+cp .env.example .env
+docker compose up -d --build</pre>
+
+<div class="warn">⚠️ Nicht ungeschützt ins Internet stellen: HTTPS-Reverse-Proxy oder VPN verwenden. Schreibaktionen nur nach Einzelfreigabe. Diese Seite ist nur eine Projektseite; der Agent läuft in deinem eigenen Container.</div>
+
+<h2>🗺️ Roadmap</h2>
+<p>Audio, dynamische Geräteliste, Verlaufsdiagramme, mehrere Benutzer, Löschkonzept für Verläufe.</p>
+<footer>Gebaut mit ❤️ von Daniel · hAI.FHEMChatAgent © 2026</footer>
+</div></body></html>
