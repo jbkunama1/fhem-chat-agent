@@ -1,5 +1,6 @@
 services:
   fhem-chat:
+    container_name: haifhemchat
     image: ${APP_IMAGE:-ghcr.io/jbkunama1/hai.fhemchatagent:latest}
     restart: unless-stopped
     ports:
