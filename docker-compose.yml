@@ -22,6 +22,8 @@ services:
       APPROVAL_TTL_SECONDS: ${APPROVAL_TTL_SECONDS:-120}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
       TELEGRAM_ALLOWED_USER_IDS: ${TELEGRAM_ALLOWED_USER_IDS:-}
+    networks:
+      - highfishNetwork
     volumes:
       - chat-data:/data
     security_opt:
@@ -30,3 +32,7 @@ services:
       - ALL
 volumes:
   chat-data:
+networks:
+  highfishNetwork:
+    external: true
+    name: highfishNetwork
